@@ -9,8 +9,7 @@ class Intro(Scene):
     def construct(self):
         student_code = StyledCode(
             "code_snippets/Student.java",
-            language="java",
-            background_stroke_width=1
+            language="java"
         )
         wojak = ImageMobject("assets/smug_wojak.png")
         laptop = ImageMobject("assets/laptop.png")
@@ -29,7 +28,7 @@ class Intro(Scene):
             0
             ]) for _ in range(num_squares)
         ])
-        square_colors: List = [square.fill_color for square in squares]
+        square_colors: list = [square.fill_color for square in squares]
         aligned_squares = VGroup(*[
             Square(
                 side_length=1,
@@ -42,7 +41,7 @@ class Intro(Scene):
             ]) for i in range(num_squares)
         ])   
 
-        student_code.remove(student_code.background_mobject)
+        student_code.remove(student_code.background)
 
         student_code.scale(0.6)
         laptop.scale(1.75)
