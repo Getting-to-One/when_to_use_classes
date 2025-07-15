@@ -4,6 +4,7 @@ from styled_code import StyledCode
 import random
 
 config.background_color = DRACULA_BG
+PLACEHOLDER = ManimColor("#626784")
 
 class Intro(Scene):
     def construct(self):
@@ -72,3 +73,33 @@ class Intro(Scene):
         self.wait(1)
         self.play(Transform(squares, aligned_squares))
         self.wait(1)
+
+class SnakeExample(Scene):
+    def construct(self):
+        # Code mobjects
+        ugly_snake_code = StyledCode("code_snippets/snake/snake1.py")
+        better_snake_code = StyledCode(
+            "code_snippets/snake/snake1_refactored.py"
+        )
+
+        # Sizing
+        ugly_snake_code.scale(0.6)
+
+        # Bg removal
+        ugly_snake_code.remove(ugly_snake_code.background)
+        better_snake_code.remove(better_snake_code.background)
+
+        # Rectangles
+        variables_rectangle = SurroundingRectangle(
+            ugly_snake_code.code_lines[0:4], color=PLACEHOLDER
+        )
+        function_rectangle = SurroundingRectangle(
+            ugly_snake_code.code_lines[5], color=PLACEHOLDER
+        )
+
+        self.play(FadeIn(ugly_snake_code))
+        self.wait(1)
+        self.play(Create(variables_rectangle))
+        self.play(FadeOut(variables_rectangle))
+        self.play(Create(function_rectangle))
+        self.play(FadeOut(function_rectangle))
