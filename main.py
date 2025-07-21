@@ -1,10 +1,9 @@
 from manim import *
-from custom_colors import DRACULA_BG
+from custom_colors import *
 from styled_code import StyledCode
 import random
 
 config.background_color = DRACULA_BG
-PLACEHOLDER = ManimColor("#626784")
 
 class Intro(Scene):
     def construct(self):
@@ -81,9 +80,31 @@ class SnakeExample(Scene):
         better_snake_code = StyledCode(
             "code_snippets/snake/snake1_refactored.py"
         )
+        tip1 = Text(
+            "Pattern #1: Repetition in variable/function names.",
+            color=DRACULA_COMMENT,
+            font_size=30
+        )
+        ugly_multiplayer_code = StyledCode(
+            "code_snippets/snake/snake2.py"
+        )
+        better_multiplyer_code = StyledCode(
+            "code_snippets/snake/snake2_refactored.py"
+        )
+        before = Text("Before:", color=DRACULA_COMMENT, font_size=30)
+        after = Text("After:", color=DRACULA_COMMENT, font_size=30)
 
         # Sizing
-        ugly_snake_code.scale(0.6)
+        SCALE_FACTOR = 0.5
+        ugly_snake_code.scale(SCALE_FACTOR)
+        better_snake_code.scale(SCALE_FACTOR)
+
+        # Positioning
+        tip1.to_edge(UP)
+        # ugly_snake_code.to_edge(LEFT)
+        better_snake_code.to_edge(RIGHT)
+        before.next_to(ugly_snake_code, UP).to_edge(LEFT)
+        after.next_to(better_snake_code, UP).align_to(better_snake_code, LEFT)
 
         # Bg removal
         ugly_snake_code.remove(ugly_snake_code.background)
@@ -91,10 +112,10 @@ class SnakeExample(Scene):
 
         # Rectangles
         variables_rectangle = SurroundingRectangle(
-            ugly_snake_code.code_lines[0:4], color=PLACEHOLDER
+            ugly_snake_code.code_lines[0:4], color=DRACULA_COMMENT
         )
         function_rectangle = SurroundingRectangle(
-            ugly_snake_code.code_lines[5], color=PLACEHOLDER
+            ugly_snake_code.code_lines[5], color=DRACULA_COMMENT
         )
 
         self.play(FadeIn(ugly_snake_code))
@@ -103,3 +124,15 @@ class SnakeExample(Scene):
         self.play(FadeOut(variables_rectangle))
         self.play(Create(function_rectangle))
         self.play(FadeOut(function_rectangle))
+        self.wait(1)
+        self.play(FadeIn(tip1))
+        self.wait(1)
+        self.play(FadeOut(tip1))
+        self.wait(1)
+        self.play(
+            ugly_snake_code.animate.to_edge(LEFT),
+            FadeIn(before, after),
+            Create(better_snake_code)
+        )
+        self.wait(1)
+        self.play(*[FadeOut(mob) for mob in self.mobjects])
