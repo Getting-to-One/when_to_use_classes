@@ -4,7 +4,8 @@ snake_body_coords = [(0, 0)]
 snake_direction = "RIGHT"
 
 def move_snake():
-    global snake_head_x, snake_head_y, snake_body_coords, snake_direction
+    global snake_head_x, snake_head_y, snake_body_coords
+    global snake_direction
 
     if snake_direction == "UP":
         snake_head_y -= 1
