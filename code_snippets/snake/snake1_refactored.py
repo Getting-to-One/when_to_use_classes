@@ -16,3 +16,5 @@ class Snake:
             self.head_x += 1
 
         self.body_coords.insert(0, (self.head_x, self.head_y))
+
+snake = Snake(0, 0, [(0, 0)], "RIGHT")
