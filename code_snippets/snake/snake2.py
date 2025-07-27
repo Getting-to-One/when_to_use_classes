@@ -9,7 +9,8 @@ snake2_body_coords = [(10, 10)]
 snake2_direction = "LEFT"
 
 def move_snake1():
-    global snake1_head_x, snake1_head_y, snake1_body_coords, snake1_direction
+    global snake1_head_x, snake1_head_y, snake1_body_coords
+    global snake1_direction
 
     if snake1_direction == "UP":
         snake1_head_y -= 1
@@ -23,7 +24,8 @@ def move_snake1():
     snake1_body_coords.insert(0, (snake1_head_x, snake1_head_y))
 
 def move_snake2():
-        global snake2_head_x, snake2_head_y, snake2_body_coords, snake2_direction
+        global snake2_head_x, snake2_head_y, snake2_body_coords
+        global snake2_direction
 
         if snake2_direction == "UP":
             snake2_head_y -= 1
