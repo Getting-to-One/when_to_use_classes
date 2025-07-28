@@ -75,7 +75,6 @@ class Intro(Scene):
 
 class SnakeExample(Scene):
     def construct(self):
-        # Code mobjects
         ugly_snake_code = StyledCode("code_snippets/snake/snake1.py")
         better_snake_code = StyledCode(
             "code_snippets/snake/snake1_refactored.py"
@@ -85,32 +84,36 @@ class SnakeExample(Scene):
             color=DRACULA_COMMENT,
             font_size=30
         )
-        ugly_multiplayer_code = StyledCode(
-            "code_snippets/snake/snake2.py"
-        )
-        better_multiplyer_code = StyledCode(
-            "code_snippets/snake/snake2_refactored.py"
-        )
         before = Text("Before:", color=DRACULA_COMMENT, font_size=30)
         after = Text("After:", color=DRACULA_COMMENT, font_size=30)
+        pros = Text("Pros:", color=DRACULA_COMMENT, font_size=30)
+        pros_list = BulletedList(
+            "No global variables",
+            "Scalable"
+        )
+
+        # Color
+        pros_list.set_color(DRACULA_COMMENT)
 
         # Sizing
         SCALE_FACTOR = 0.5
         ugly_snake_code.scale(SCALE_FACTOR)
         better_snake_code.scale(SCALE_FACTOR)
+        pros_list.scale(0.7)
 
         # Positioning
         tip1.to_edge(UP)
-        # ugly_snake_code.to_edge(LEFT)
         better_snake_code.to_edge(RIGHT)
         before.next_to(ugly_snake_code, UP).to_edge(LEFT)
         after.next_to(better_snake_code, UP).align_to(better_snake_code, LEFT)
+        pros.next_to(better_snake_code, DOWN).align_to(better_snake_code,LEFT)
+        pros_list.next_to(pros, DOWN).align_to(better_snake_code, LEFT)
 
         # Bg removal
         ugly_snake_code.remove(ugly_snake_code.background)
         better_snake_code.remove(better_snake_code.background)
 
-        # Rectangles
+        # Emphasis
         variables_rectangle = SurroundingRectangle(
             ugly_snake_code.code_lines[0:4], color=DRACULA_COMMENT
         )
@@ -134,5 +137,10 @@ class SnakeExample(Scene):
             FadeIn(before, after),
             Create(better_snake_code)
         )
+        x = Cross(ugly_snake_code.code_lines[0:5], color=DRACULA_RED).scale(0.5)
+        self.wait(1)
+        self.play(FadeIn(pros))
+        self.play(FadeIn(pros_list[0]), Create(x))
+        self.play(FadeIn(pros_list[1]))
         self.wait(1)
         self.play(*[FadeOut(mob) for mob in self.mobjects])
