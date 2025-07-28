@@ -144,3 +144,59 @@ class SnakeExample(Scene):
         self.play(FadeIn(pros_list[1]))
         self.wait(1)
         self.play(*[FadeOut(mob) for mob in self.mobjects])
+
+class MultiplayerSnake(Scene):
+    def construct(self):
+        TEXT_SIZE = 30
+        ugly_code = StyledCode("code_snippets/snake/snake2.py")
+        without_classes = Text(
+            "Without classes:",
+            color=DRACULA_COMMENT,
+            font_size=TEXT_SIZE,
+        )
+        classless_group = VGroup(without_classes, ugly_code)
+        better_code = StyledCode("code_snippets/snake/snake2_refactored.py")
+        with_classes = Text(
+            "With classes:",
+            color=DRACULA_COMMENT,
+            font_size=TEXT_SIZE
+        )
+
+        # Bg removal
+        ugly_code.remove(ugly_code.background)
+        better_code.remove(better_code.background)
+
+        # Sizing
+        SCALE_FACTOR = 0.45
+        ugly_code.scale(SCALE_FACTOR)
+        better_code.scale(SCALE_FACTOR)
+
+        # Positioning
+        better_code.to_edge(RIGHT)
+        without_classes.next_to(ugly_code, UP).align_to(ugly_code, LEFT)
+        with_classes.next_to(better_code, UP).align_to(better_code, LEFT)
+
+        move_snake1_emphasis = SurroundingRectangle(
+            ugly_code.code_lines[10],
+            color=DRACULA_COMMENT
+        )
+        move_snake2_emphasis = SurroundingRectangle(
+            ugly_code.code_lines[25],
+            color=DRACULA_COMMENT
+        )
+        move_snake_emphasis = VGroup(move_snake1_emphasis, move_snake2_emphasis)
+
+        self.play(FadeIn(classless_group))
+        self.wait(1)
+        self.play(Create(move_snake_emphasis))
+        self.wait(1)
+        self.play(FadeOut(move_snake_emphasis))
+        self.wait(1)
+        self.play(
+            classless_group.animate.to_edge(LEFT),
+            FadeIn(with_classes),
+            Create(better_code)
+        )
+        self.wait(1)
+
+class 
