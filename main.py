@@ -184,7 +184,9 @@ class MultiplayerSnake(Scene):
             ugly_code.code_lines[25],
             color=DRACULA_COMMENT
         )
-        move_snake_emphasis = VGroup(move_snake1_emphasis, move_snake2_emphasis)
+        move_snake_emphasis = VGroup(
+            move_snake1_emphasis, move_snake2_emphasis
+        )
 
         self.play(FadeIn(classless_group))
         self.wait(1)
@@ -199,4 +201,19 @@ class MultiplayerSnake(Scene):
         )
         self.wait(1)
 
-class 
+class Database(Scene):
+    def construct(self):
+        ugly_code = StyledCode("code_snippets/database/database.py")
+        mid_code = StyledCode("code_snippets/database/database_mid.py")
+        good_code = StyledCode("code_snippets/database/database_refactored.py")
+
+        # Bg removal
+        ugly_code.remove(ugly_code.background)
+        mid_code.remove(mid_code.background)
+        good_code.remove(good_code.background)
+
+        # Scaling
+        SCALE_FACTOR = 0.5
+        ugly_code.scale(SCALE_FACTOR)
+
+        self.play(FadeIn(ugly_code))
