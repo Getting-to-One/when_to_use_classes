@@ -12,7 +12,7 @@ let
       owner = "Getting-to-One";
       repo = "manim_utils";
       rev = "main";
-      hash = "sha256-1Ycf9y8iOeubyaUYCYRXC4QQu49/FAQ+mjX/V8YNMrg=";
+      hash = "sha256-OsIR+u+x8bVk86Ocugzl4waEnlV/k2KBuevcOAO0Yl8=";
     };
     doCheck = false; # check requires pip
     format = "pyproject";
