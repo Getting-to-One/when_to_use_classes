@@ -1,6 +1,7 @@
 from manim import *
 from custom_colors import *
 from styled_code import StyledCode
+from styled_code_window import StyledCodeWindow
 import random
 
 config.background_color = DRACULA_BG
@@ -80,7 +81,7 @@ class SnakeExample(Scene):
             "code_snippets/snake/snake1_refactored.py"
         )
         tip1 = Text(
-            "Pattern #1: Repetition in variable/function names.",
+            "Pattern #1: Repetition in variable/function names",
             color=DRACULA_COMMENT,
             font_size=30
         )
@@ -203,9 +204,25 @@ class MultiplayerSnake(Scene):
 
 class Database(Scene):
     def construct(self):
+        CIRCUMSCRIBE_TIME: int = 6
+        SCALE_FACTOR = 0.5
+
         ugly_code = StyledCode("code_snippets/database/database.py")
         mid_code = StyledCode("code_snippets/database/database_mid.py")
+        lines_with_connection: list[int] = [0, 7, 16, 34] # in mid
+        lines_with_cursor: list[int] = [1, 6, 8, 12, 21, 26, 28] # in mid
         good_code = StyledCode("code_snippets/database/database_refactored.py")
+        database_class = StyledCodeWindow(
+            "code_snippets/database/database_class.py",
+            "Database.py"
+        )
+        main_file = StyledCodeWindow("code_snippets/database/main.py")
+        docstring_image = ImageMobject("assets/docstring.png")
+        pattern = Text(
+            "Pattern #2: Conceptual grouping",
+            color=DRACULA_COMMENT,
+            font_size=30
+        )
 
         # Bg removal
         ugly_code.remove(ugly_code.background)
@@ -213,7 +230,74 @@ class Database(Scene):
         good_code.remove(good_code.background)
 
         # Scaling
-        SCALE_FACTOR = 0.5
         ugly_code.scale(SCALE_FACTOR)
+        mid_code.scale(SCALE_FACTOR)
+        good_code.scale(SCALE_FACTOR)
+        database_class.scale(SCALE_FACTOR)
+        main_file.scale(SCALE_FACTOR)
+
+        # Positioning
+        docstring_image.to_edge(DOWN)
+        database_class.to_edge(LEFT)
+        main_file.to_edge(RIGHT)
+        pattern.to_corner(DR)
 
         self.play(FadeIn(ugly_code))
+        self.wait(1)
+        self.add(docstring_image)
+        self.play(
+            Circumscribe(
+                ugly_code.code_lines[4],
+                color=DRACULA_YELLOW,
+                time_width=CIRCUMSCRIBE_TIME
+            ),
+            Circumscribe(
+                ugly_code.code_lines[10],
+                color=DRACULA_YELLOW,
+                time_width=CIRCUMSCRIBE_TIME
+            ),
+            Circumscribe(
+                ugly_code.code_lines[18],
+                color=DRACULA_YELLOW,
+                time_width=CIRCUMSCRIBE_TIME
+            )
+        )
+        self.remove(docstring_image)
+        self.wait(1)
+        self.play(FadeIn(pattern))
+        self.wait(1)
+        self.play(FadeOut(pattern))
+        self.wait(1)
+        self.play(Transform(ugly_code, mid_code))
+        self.wait(1)
+        circumscribe_lines_with_connection = [
+            Circumscribe(
+                ugly_code.code_lines[i],
+                color=DRACULA_YELLOW,
+                time_width=CIRCUMSCRIBE_TIME
+            ) for i in lines_with_connection
+        ]
+        self.play(
+            *circumscribe_lines_with_connection
+        )
+        circumscribe_lines_with_cursor = [
+            Circumscribe(
+                ugly_code.code_lines[i],
+                color=DRACULA_YELLOW,
+                time_width=CIRCUMSCRIBE_TIME
+            ) for i in lines_with_cursor
+        ]
+        self.play(*circumscribe_lines_with_cursor)
+        self.wait(1)
+        self.play(Transform(ugly_code, good_code))
+        self.wait(1)
+        self.play(ApplyWave(ugly_code.code_lines[0:37]))
+        self.play(FadeOut(ugly_code.code_lines[0:37]), run_time=0.5)
+        self.wait(1)
+        self.play(
+            FadeIn(database_class),
+            ReplacementTransform(ugly_code.code_lines[38], main_file)
+        )
+        self.wait(1)
+        self.play(FadeOut(database_class), main_file.animate.center())
+        self.wait(1)

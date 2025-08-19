@@ -1,5 +1,0 @@
-def fetch_database():
-    """retrieves all song objects from the database"""
-    cursor.execute("SELECT * FROM tunes")
-    connection.commit()
-    return cursor.fetchall()
