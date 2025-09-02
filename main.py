@@ -301,3 +301,109 @@ class Database(Scene):
         self.wait(1)
         self.play(FadeOut(database_class), main_file.animate.center())
         self.wait(1)
+
+class Subclass(Scene):
+    def construct(self):
+        SCALE_FACTOR = 0.5
+        CIRCUMSCRIBE_TIME: int = 5
+
+        bad_code = StyledCode("code_snippets/manim/bad_code.py")
+        code_class = StyledCode("code_snippets/manim/styled_code.py")
+        new_code = StyledCode("code_snippets/manim/new_code.py")
+        same_args = VGroup(
+            bad_code.code_lines[7:10],
+            bad_code.code_lines[14:17],
+            bad_code.code_lines[21:24]
+        )
+        pattern = Text(
+            "Pattern #3: Repeat arguments in constructors",
+            color=DRACULA_COMMENT,
+            font_size=30
+        )
+        default_args_bad_code : list[int] = [7, 8, 14, 15, 22, 23]
+        indicate_default_args_bad_code : list[Indicate] = [
+            Indicate(
+                bad_code.code_lines[i],
+                color=DRACULA_YELLOW,
+                scale_factor=1.1
+            ) for i in default_args_bad_code
+        ]
+        default_args_code_class : list[int] = [6, 7, 13, 16]
+        indicate_default_args_code_class : list[Indicate] = [
+            Indicate(
+                code_class.code_lines[i],
+                color=DRACULA_YELLOW,
+                scale_factor=1.1
+            ) for i in default_args_code_class
+        ]
+        hard_coded_args : list[int] = [9, 16, 23]
+        indicate_hard_coded_args : list[Indicate] = [
+            Indicate(
+                bad_code.code_lines[i],
+                color=DRACULA_YELLOW,
+                scale_factor=1.1
+            ) for i in hard_coded_args
+        ]
+
+        # Bg removal
+        bad_code.remove(bad_code.background)
+        code_class.remove(code_class.background)
+        new_code.remove(new_code.background)
+
+        # Scaling
+        bad_code.scale(SCALE_FACTOR)
+        code_class.scale(SCALE_FACTOR)
+        new_code.scale(SCALE_FACTOR)
+
+        # Positioning
+        pattern.to_edge(UP)
+        code_class.to_edge(RIGHT)
+
+        self.play(FadeIn(bad_code))
+        self.wait(1)
+        self.play(
+            Circumscribe(
+                bad_code.code_lines[4][13:17],
+                color=DRACULA_YELLOW,
+                time_width=CIRCUMSCRIBE_TIME
+            ),
+            Circumscribe(
+                bad_code.code_lines[11][15:19],
+                color=DRACULA_YELLOW,
+                time_width=CIRCUMSCRIBE_TIME
+            ),
+            Circumscribe(
+                bad_code.code_lines[18][16:20],
+                color=DRACULA_YELLOW,
+                time_width=CIRCUMSCRIBE_TIME
+            )
+        )
+        self.wait(1)
+        self.play(
+            *[Circumscribe(
+                arg, color=DRACULA_YELLOW, time_width=CIRCUMSCRIBE_TIME + 2
+            ) for arg in same_args]
+        )
+        self.play(FadeIn(pattern))
+        self.wait(1)
+        self.play(FadeOut(pattern))
+        self.wait(1)
+        self.play(bad_code.animate.to_edge(LEFT), FadeIn(code_class))
+        self.wait(1)
+        self.play(
+            *indicate_default_args_bad_code,
+            *indicate_default_args_code_class
+        )
+        self.wait(1)
+        self.play(
+            *indicate_hard_coded_args,
+            Indicate(
+                code_class.code_lines[15],
+                color=DRACULA_YELLOW,
+                scale_factor=1.1
+            )
+        )
+        self.wait(1)
+        new_code.move_to(bad_code.get_center())
+        self.play(FadeTransform(bad_code, new_code))
+        self.wait(1)
