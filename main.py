@@ -219,7 +219,7 @@ class Database(Scene):
         main_file = StyledCodeWindow("code_snippets/database/main.py")
         docstring_image = ImageMobject("assets/docstring.png")
         pattern = Text(
-            "Pattern #2: Conceptual grouping",
+            "Pattern #2: Similar/related functions",
             color=DRACULA_COMMENT,
             font_size=30
         )
@@ -406,4 +406,38 @@ class Subclass(Scene):
         self.wait(1)
         new_code.move_to(bad_code.get_center())
         self.play(FadeTransform(bad_code, new_code))
+        self.wait(1)
+        self.play(*[FadeOut(mob) for mob in self.mobjects])
+
+class Outro(Scene):
+    def construct(self):
+        FONT_SIZE=38
+        red_flags = Text("Red flags:", color=DRACULA_RED)
+        pattern1 = Text(
+            "Repetition in function/variable names",
+            color=DRACULA_FOREGROUND,
+            font_size=FONT_SIZE
+        )
+        pattern2 = Text(
+            "Similar/related functions",
+            color=DRACULA_FOREGROUND,
+            font_size=FONT_SIZE
+        )
+        pattern3 = Text(
+            "Repeat arguments in constructors",
+            color=DRACULA_FOREGROUND,
+            font_size=FONT_SIZE
+        )
+
+        # Positioning
+        red_flags.to_corner(UL).shift(DOWN * 2)
+        pattern1.next_to(red_flags, DOWN, aligned_edge=LEFT)
+        pattern2.next_to(pattern1, DOWN, aligned_edge=LEFT)
+        pattern3.next_to(pattern2, DOWN, aligned_edge=LEFT)
+
+        self.play(FadeIn(red_flags))
+        self.wait(1)
+        self.play(FadeIn(pattern1))
+        self.play(FadeIn(pattern2))
+        self.play(FadeIn(pattern3))
         self.wait(1)
