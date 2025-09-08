@@ -12,6 +12,10 @@ class Intro(Scene):
             "code_snippets/Student.java",
             language="java"
         )
+        student_code_extended = StyledCode(
+            "code_snippets/StudentInherited.java",
+            language="java"
+        )
         wojak = ImageMobject("assets/smug_wojak.png")
         laptop = ImageMobject("assets/laptop.png")
         bad_code = ImageMobject("assets/bad_code.png")
@@ -43,16 +47,26 @@ class Intro(Scene):
         ])   
 
         student_code.remove(student_code.background)
+        student_code_extended.remove(student_code_extended.background)
 
         student_code.scale(0.6)
+        student_code_extended.scale(0.6)
         laptop.scale(1.75)
         bad_code.scale(2)
 
         laptop.shift(RIGHT * 2, DOWN)
 
-        self.play(FadeIn(student_code))
+        self.play(FadeIn(student_code.code_lines[0]))
         self.wait(1)
-        self.play(FadeOut(student_code))
+        self.play(FadeIn(student_code.code_lines[1:13]))
+        self.wait(1)
+        self.play(FadeIn(student_code.code_lines[13:21]))
+        self.wait(1)
+        self.play(FadeIn(student_code.code_lines[21:30]))
+        self.wait(1)
+        self.play(ReplacementTransform(student_code, student_code_extended))
+        self.wait(1)
+        self.play(FadeOut(student_code_extended))
         self.play(FadeIn(wojak))
         self.wait(1)
         self.play(FadeIn(laptop))
@@ -67,7 +81,7 @@ class Intro(Scene):
         self.wait(1)
         self.play(FadeIn(uml))
         self.wait(1)
-        self.play(FadeOut(uml, pointing_wojak))
+        self.play(FadeOut(pointing_wojak, uml))
         self.wait(1)
         self.play(FadeIn(squares))
         self.wait(1)
@@ -81,7 +95,7 @@ class SnakeExample(Scene):
             "code_snippets/snake/snake1_refactored.py"
         )
         tip1 = Text(
-            "Pattern #1: Repetition in variable/function names",
+            "1) Repetition in variable/function names",
             color=DRACULA_COMMENT,
             font_size=30
         )
@@ -219,7 +233,7 @@ class Database(Scene):
         main_file = StyledCodeWindow("code_snippets/database/main.py")
         docstring_image = ImageMobject("assets/docstring.png")
         pattern = Text(
-            "Pattern #2: Similar/related functions",
+            "2) Similar/related functions",
             color=DRACULA_COMMENT,
             font_size=30
         )
@@ -316,7 +330,7 @@ class Subclass(Scene):
             bad_code.code_lines[21:24]
         )
         pattern = Text(
-            "Pattern #3: Repeat arguments in constructors",
+            "3) Repeat arguments in constructors",
             color=DRACULA_COMMENT,
             font_size=30
         )
