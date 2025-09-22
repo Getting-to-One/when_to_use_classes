@@ -316,6 +316,61 @@ class Database(Scene):
         self.play(FadeOut(database_class), main_file.animate.center())
         self.wait(1)
 
+class DatabaseExplanation(Scene):
+    def construct(self):
+        SCALE_FACTOR = 0.5
+        database_class = StyledCodeWindow(
+            "code_snippets/database/database_class.py",
+            "Database.py"
+        )
+        song_class = StyledCode("code_snippets/database/song.py")
+
+        # Bg removal
+        song_class.remove(song_class.background)
+
+        # Scaling
+        database_class.scale(SCALE_FACTOR)
+        song_class.scale(SCALE_FACTOR)
+
+        # Positioning
+        database_class.to_edge(LEFT)
+
+        self.play(FadeOut(database_class), FadeIn(song_class))
+        self.wait(1)
+
+class DBE2(Scene):
+    def construct(self):
+        SCALE_FACTOR = 0.5
+
+        song_class = StyledCode("code_snippets/database/song.py")
+
+        song_class.remove(song_class.background)
+
+        song_class.scale(SCALE_FACTOR)
+
+        self.add(song_class)
+        self.play(
+            Indicate(song_class.code_lines[5][13:17], color=DRACULA_YELLOW),
+            Indicate(song_class.code_lines[11][10:14], color=DRACULA_YELLOW),
+            Indicate(song_class.code_lines[19][10:14], color=DRACULA_YELLOW)
+        )
+        self.wait(1)
+        self.play(
+            Create(
+                Cross(song_class.code_lines[5:10], stroke_color=DRACULA_RED)
+            )
+        )
+        self.play(
+            Create(
+                Cross(song_class.code_lines[11:18], stroke_color=DRACULA_RED)
+            )
+        )
+        self.play(
+            Create(
+                Cross(song_class.code_lines[19:36], stroke_color=DRACULA_RED)
+            )
+        )
+        self.wait(1)
 class Subclass(Scene):
     def construct(self):
         SCALE_FACTOR = 0.5
